@@ -20,6 +20,10 @@ if(ENABLE_FIRMWARE_INSTALL)
     install(DIRECTORY cura/resources/firmware DESTINATION ${CMAKE_INSTALL_DATADIR}/cura/resources)
 endif(ENABLE_FIRMWARE_INSTALL)
 
+install(FILES uranium/resources/shaders/recolor_image.frag.qsb
+        uranium/resources/shaders/recolor_image.vert.qsb
+        DESTINATION ${CMAKE_INSTALL_DATADIR}uranium/resources/shaders OPTIONAL)
+
 if(ENABLE_WHATSNEW_INSTALL)
     install(FILES cura/resources/images/whats_new/0.png
                   cura/resources/images/whats_new/1.png
