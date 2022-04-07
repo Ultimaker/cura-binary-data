@@ -45,6 +45,6 @@ install(FILES uranium/resources/shaders/recolor_image.frag.qsb
         DESTINATION ${CMAKE_INSTALL_DATADIR}/uranium/resources/shaders OPTIONAL)
 
 if(WIN32)
-	install(FILES windows/VC_redist_x64.exe DESTINATION ".")
+	install(FILES windows/VC_redist.x64.exe DESTINATION ".")
 	install(DIRECTORY windows/arduino DESTINATION ".")
 endif()
