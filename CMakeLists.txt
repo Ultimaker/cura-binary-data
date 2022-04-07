@@ -40,6 +40,10 @@ if(ENABLE_WHATSNEW_INSTALL)
             DESTINATION ${CMAKE_INSTALL_DATADIR}/cura/resources/texts/whats_new OPTIONAL)
 endif()
 
+install(FILES uranium/resources/shaders/recolor_image.frag.qsb
+              uranium/resources/shaders/recolor_image.vert.qsb
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/uranium/resources/shaders OPTIONAL)
+
 if(WIN32)
 	install(FILES windows/vcredist_x64.exe DESTINATION ".")
 	install(FILES windows/vcredist_x32.exe DESTINATION ".")
