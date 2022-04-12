@@ -39,3 +39,7 @@ if(ENABLE_WHATSNEW_INSTALL)
                   cura/resources/texts/whats_new/4.html
             DESTINATION ${CMAKE_INSTALL_DATADIR}/cura/resources/texts/whats_new OPTIONAL)
 endif()
+
+if(WIN32)
+    install(DIRECTORY windows/arduino DESTINATION ".")
+endif()
