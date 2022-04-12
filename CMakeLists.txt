@@ -39,8 +39,3 @@ if(ENABLE_WHATSNEW_INSTALL)
                   cura/resources/texts/whats_new/4.html
             DESTINATION ${CMAKE_INSTALL_DATADIR}/cura/resources/texts/whats_new OPTIONAL)
 endif()
-
-if(WIN32)
-	install(FILES windows/VC_redist.x64.exe DESTINATION ".")
-	install(DIRECTORY windows/arduino DESTINATION ".")
-endif()
