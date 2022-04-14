@@ -41,7 +41,5 @@ if(ENABLE_WHATSNEW_INSTALL)
 endif()
 
 if(WIN32)
-	install(FILES windows/vcredist_x64.exe DESTINATION ".")
-	install(FILES windows/vcredist_x32.exe DESTINATION ".")
-	install(DIRECTORY windows/arduino DESTINATION ".")
+    install(DIRECTORY windows/arduino DESTINATION ".")
 endif()
