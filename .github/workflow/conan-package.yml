@@ -25,6 +25,7 @@ on:
         branches:
             - main
             - 'CURA-*'
+            - '[4-9].[0-9]'
 
     pull_request:
         paths:
@@ -34,7 +35,7 @@ on:
             - '.github/workflows/conan-package.yml'
         branches:
             - main
-
+            - '[4-9].[0-9]'
 jobs:
     conan-recipe-version:
         uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@CURA-9365_fix_building_cura_main
