@@ -26,8 +26,8 @@ class CuraBinaryDataConan(ConanFile):
     }
 
     def validate(self):
-        if tools.Version(self.version) <= tools.Version("4"):
-            raise ConanInvalidConfiguration("Only versions 5+ are support")
+        if (self.version != None) and (tools.Version(self.version) <= tools.Version("4")):
+            raise ConanInvalidConfiguration("Only versions 5+ are supported!")
 
     def layout(self):
         self.cpp.package.resdirs = [os.path.join("resources", "cura"), os.path.join("resources", "uranium"), "windows"]
@@ -41,9 +41,9 @@ class CuraBinaryDataConan(ConanFile):
 
     def package_info(self):
         if self.settings.os == "Windows":
-            self.runenv_info.append_path("PATH", os.path.join(self.cpp_info.res_paths[2], "arduino", "amd64"))
-            self.runenv_info.append_path("PATH", os.path.join(self.cpp_info.res_paths[2], "arduino", "CP210x_6.7.4"))
-            self.runenv_info.append_path("PATH", os.path.join(self.cpp_info.res_paths[2], "arduino", "FTDI USB Drivers", "amd64"))
+            self.runenv_info.append_path("PATH", os.path.join(self.cpp.package.resdirs[2], "arduino", "amd64"))
+            self.runenv_info.append_path("PATH", os.path.join(self.cpp.package.resdirs[2], "arduino", "CP210x_6.7.4"))
+            self.runenv_info.append_path("PATH", os.path.join(self.cpp.package.resdirs[2], "arduino", "FTDI USB Drivers", "amd64"))
 
     def package_id(self):
         del self.info.settings.compiler
