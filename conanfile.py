@@ -24,6 +24,10 @@ class CuraBinaryDataConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
+    
+    def set_version(self):
+        if not self.version:
+            self.version = "5.4.0-beta.1"
 
     def validate(self):
         if (self.version != None) and (tools.Version(self.version) <= tools.Version("4")):
