@@ -13,6 +13,7 @@ on:
             - 'uranium/**'
             - 'windows'
             - '.github/workflows/conan-package.yml'
+            - 'conanfile.py'
         branches:
             - main
             - 'CURA-*'
