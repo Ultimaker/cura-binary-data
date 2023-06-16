@@ -27,18 +27,6 @@ jobs:
         with:
             project_name: cura_binary_data
 
-    conan-package-export-macos:
-        needs: [ conan-recipe-version ]
-        uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
-        with:
-            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-            recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            runs_on: 'macos-10.15'
-            python_version: '3.10.x'
-            conan_logging_level: 'info'
-            conan_export_binaries: true
-        secrets: inherit
-
     conan-package-export-linux:
         needs: [ conan-recipe-version ]
         uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main

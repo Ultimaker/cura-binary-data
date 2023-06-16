@@ -52,3 +52,7 @@ class CuraBinaryDataConan(ConanFile):
     def package_id(self):
         del self.info.settings.compiler
         del self.info.settings.build_type
+        if self.settings.os != "Windows":
+            compatible_pkg = self.info.clone()
+            compatible_pkg.settings.os = "Linux"
+            self.compatible_packages.append(compatible_pkg)
