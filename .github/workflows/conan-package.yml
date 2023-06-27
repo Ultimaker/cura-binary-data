@@ -13,6 +13,7 @@ on:
             - 'uranium/**'
             - 'windows'
             - '.github/workflows/conan-package.yml'
+            - 'conanfile.py'
         branches:
             - main
             - 'CURA-*'
@@ -25,18 +26,6 @@ jobs:
         uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
         with:
             project_name: cura_binary_data
-
-    conan-package-export-macos:
-        needs: [ conan-recipe-version ]
-        uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
-        with:
-            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-            recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            runs_on: 'macos-10.15'
-            python_version: '3.10.x'
-            conan_logging_level: 'info'
-            conan_export_binaries: true
-        secrets: inherit
 
     conan-package-export-linux:
         needs: [ conan-recipe-version ]
@@ -64,7 +53,7 @@ jobs:
 
     notify-export:
         if: ${{ always() }}
-        needs: [ conan-recipe-version, conan-package-export-linux, conan-package-export-macos, conan-package-export-windows ]
+        needs: [ conan-recipe-version, conan-package-export-linux, conan-package-export-windows ]
 
         uses: ultimaker/cura/.github/workflows/notify.yml@main
         with:

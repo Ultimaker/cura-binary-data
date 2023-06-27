@@ -24,6 +24,10 @@ class CuraBinaryDataConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
+    
+    def set_version(self):
+        if not self.version:
+            self.version = "5.4.0-beta.1"
 
     def validate(self):
         if (self.version != None) and (tools.Version(self.version) <= tools.Version("4")):
@@ -48,3 +52,7 @@ class CuraBinaryDataConan(ConanFile):
     def package_id(self):
         del self.info.settings.compiler
         del self.info.settings.build_type
+        if self.settings.os != "Windows":
+            compatible_pkg = self.info.clone()
+            compatible_pkg.settings.os = "Linux"
+            self.compatible_packages.append(compatible_pkg)
