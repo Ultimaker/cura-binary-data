@@ -1,10 +1,11 @@
 import os
 
 from conan import ConanFile
-from conans import tools
 from conan.errors import ConanInvalidConfiguration
+from conan.tools.scm import Git, Version
+from conan.tools.files import load, update_conandata
 
-required_conan_version = ">=1.47.0"
+required_conan_version = ">=1.59.0"
 
 
 class CuraBinaryDataConan(ConanFile):
@@ -18,19 +19,24 @@ class CuraBinaryDataConan(ConanFile):
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True
-    scm = {
-        "type": "git",
-        "subfolder": ".",
-        "url": "auto",
-        "revision": "auto"
-    }
 
     def set_version(self):
         if not self.version:
             self.version = self.conan_data["version"]
 
+    def export(self):
+        git = Git(self, self.recipe_folder)
+        scm_url, scm_commit = git.get_url_and_commit()
+        update_conandata(self, {"sources": {"commit": scm_commit, "url": scm_url}})
+
+    def source(self):
+        git = Git(self)
+        sources = self.conan_data["sources"]
+        git.clone(url = sources["url"], target = ".")
+        git.checkout(commit = sources["commit"])
+
     def validate(self):
-        if (self.version != None) and (tools.Version(self.version) <= tools.Version("4")):
+        if (self.version != None) and (Version(self.version) <= Version("4")):
             raise ConanInvalidConfiguration("Only versions 5+ are supported!")
 
     def layout(self):
