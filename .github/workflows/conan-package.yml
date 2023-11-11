@@ -7,6 +7,7 @@ on:
       - 'uranium/**'
       - 'windows'
       - '.github/workflows/conan-package.yml'
+      - '.github/workflows/requirements-runner.txt'
       - 'conanfile.py'
       - 'conandata.yml'
     branches:
@@ -16,6 +17,7 @@ on:
     tags:
       - '[0-9].[0-9].[0-9]*'
 
+# FIXME: point to `main` once merged
 jobs:
   conan-recipe-version:
     uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@CURA-10831
