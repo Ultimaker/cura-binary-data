@@ -15,7 +15,6 @@ class CuraBinaryDataConan(ConanFile):
     url = "https://github.com/Ultimaker/cura-binary-data"
     description = "Contains binary data for Cura releases, like compiled translations and firmware."
     topics = ("conan", "binaries", "translation", "firmware", "cura")
-    build_policy = "missing"
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True
@@ -27,7 +26,7 @@ class CuraBinaryDataConan(ConanFile):
     def export(self):
         git = Git(self, self.recipe_folder)
         scm_url, scm_commit = git.get_url_and_commit()
-        update_conandata(self, {"sources": {"commit": scm_commit, "url": scm_url}})
+        update_conandata(self, {"sources": {"commit": scm_commit, "url": scm_url}, "version": self.version})
 
     def source(self):
         git = Git(self)
