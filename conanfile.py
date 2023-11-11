@@ -2,8 +2,8 @@ import os
 
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
-from conan.tools.scm import Git, Version
-from conan.tools.files import load, update_conandata
+from conan.tools.scm import Version
+from conan.tools.files import copy, update_conandata
 
 required_conan_version = ">=1.59.0"
 
@@ -24,15 +24,12 @@ class CuraBinaryDataConan(ConanFile):
             self.version = self.conan_data["version"]
 
     def export(self):
-        git = Git(self, self.recipe_folder)
-        scm_url, scm_commit = git.get_url_and_commit()
-        update_conandata(self, {"sources": {"commit": scm_commit, "url": scm_url}, "version": self.version})
+        update_conandata(self, {"version": self.version})
 
-    def source(self):
-        git = Git(self)
-        sources = self.conan_data["sources"]
-        git.clone(url = sources["url"], target = ".")
-        git.checkout(commit = sources["commit"])
+    def export_sources(self):
+        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"))
+        copy(self, "*", os.path.join(self.recipe_folder, "uranium"), os.path.join(self.export_sources_folder, "uranium"))
+        copy(self, "*", os.path.join(self.recipe_folder, "windows"), os.path.join(self.export_sources_folder, "windows"))
 
     def validate(self):
         if (self.version != None) and (Version(self.version) <= Version("4")):
@@ -42,11 +39,11 @@ class CuraBinaryDataConan(ConanFile):
         self.cpp.package.resdirs = [os.path.join("resources", "cura"), os.path.join("resources", "uranium"), "windows"]
 
     def package(self):
-        self.copy("*", src = "cura", dst = self.cpp.package.resdirs[0])
-        self.copy("*", src = "uranium", dst = self.cpp.package.resdirs[1])
+        copy(self, "*", src = os.path.join(self.export_sources_folder, "cura"), dst = self.cpp.package.resdirs[0])
+        copy(self, "*", src = os.path.join(self.export_sources_folder, "uranium"), dst = self.cpp.package.resdirs[1])
 
         if self.settings.os == "Windows":
-            self.copy("*", src = "windows", dst = self.cpp.package.resdirs[2])
+            copy(self, "*", src = os.path.join(self.export_sources_folder, "windows"), dst = self.cpp.package.resdirs[2])
 
     def package_info(self):
         if self.settings.os == "Windows":
