@@ -1,10 +1,11 @@
 import os
 
 from conan import ConanFile
-from conans import tools
 from conan.errors import ConanInvalidConfiguration
+from conan.tools.scm import Version
+from conan.tools.files import copy, update_conandata
 
-required_conan_version = ">=1.47.0"
+required_conan_version = ">=1.59.0"
 
 
 class CuraBinaryDataConan(ConanFile):
@@ -14,34 +15,35 @@ class CuraBinaryDataConan(ConanFile):
     url = "https://github.com/Ultimaker/cura-binary-data"
     description = "Contains binary data for Cura releases, like compiled translations and firmware."
     topics = ("conan", "binaries", "translation", "firmware", "cura")
-    build_policy = "missing"
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True
-    scm = {
-        "type": "git",
-        "subfolder": ".",
-        "url": "auto",
-        "revision": "auto"
-    }
 
     def set_version(self):
         if not self.version:
-            self.version = "5.7.0-alpha"
+            self.version = self.conan_data["version"]
+
+    def export(self):
+        update_conandata(self, {"version": self.version})
+
+    def export_sources(self):
+        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"))
+        copy(self, "*", os.path.join(self.recipe_folder, "uranium"), os.path.join(self.export_sources_folder, "uranium"))
+        copy(self, "*", os.path.join(self.recipe_folder, "windows"), os.path.join(self.export_sources_folder, "windows"))
 
     def validate(self):
-        if (self.version != None) and (tools.Version(self.version) <= tools.Version("4")):
+        if (self.version != None) and (Version(self.version) <= Version("4")):
             raise ConanInvalidConfiguration("Only versions 5+ are supported!")
 
     def layout(self):
         self.cpp.package.resdirs = [os.path.join("resources", "cura"), os.path.join("resources", "uranium"), "windows"]
 
     def package(self):
-        self.copy("*", src = "cura", dst = self.cpp.package.resdirs[0])
-        self.copy("*", src = "uranium", dst = self.cpp.package.resdirs[1])
+        copy(self, "*", src = os.path.join(self.export_sources_folder, "cura"), dst = self.cpp.package.resdirs[0])
+        copy(self, "*", src = os.path.join(self.export_sources_folder, "uranium"), dst = self.cpp.package.resdirs[1])
 
         if self.settings.os == "Windows":
-            self.copy("*", src = "windows", dst = self.cpp.package.resdirs[2])
+            copy(self, "*", src = os.path.join(self.export_sources_folder, "windows"), dst = self.cpp.package.resdirs[2])
 
     def package_info(self):
         if self.settings.os == "Windows":
