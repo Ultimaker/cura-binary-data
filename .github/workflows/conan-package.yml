@@ -35,7 +35,7 @@ jobs:
   conan-package-create-windows:
     needs: [ conan-recipe-version, conan-package-export ]
 
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-windows.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-windows.yml@main
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
     secrets: inherit
