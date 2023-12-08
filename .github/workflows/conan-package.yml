@@ -18,16 +18,15 @@ on:
       - '[0-9]+.[0-9]+.[0-9]*'
       - '[0-9]+.[0-9]+.[0-9]'
 
-# FIXME: point to `main` once merged
 jobs:
   conan-recipe-version:
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
     with:
       project_name: cura_binary_data
 
   conan-package-export:
     needs: [ conan-recipe-version ]
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@main
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
       recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
@@ -44,7 +43,7 @@ jobs:
   conan-package-create-linux:
     needs: [ conan-recipe-version, conan-package-export ]
 
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-linux.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-linux.yml@main
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
     secrets: inherit
