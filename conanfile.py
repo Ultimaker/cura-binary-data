@@ -39,11 +39,11 @@ class CuraBinaryDataConan(ConanFile):
         self.cpp.package.resdirs = [os.path.join("resources", "cura"), os.path.join("resources", "uranium"), "windows"]
 
     def package(self):
-        copy(self, "*", src = os.path.join(self.export_sources_folder, "cura"), dst = self.cpp.package.resdirs[0])
-        copy(self, "*", src = os.path.join(self.export_sources_folder, "uranium"), dst = self.cpp.package.resdirs[1])
+        copy(self, "*", src = os.path.join(self.export_sources_folder, "cura"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[0]))
+        copy(self, "*", src = os.path.join(self.export_sources_folder, "uranium"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
 
         if self.settings.os == "Windows":
-            copy(self, "*", src = os.path.join(self.export_sources_folder, "windows"), dst = self.cpp.package.resdirs[2])
+            copy(self, "*", src = os.path.join(self.export_sources_folder, "windows"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
 
     def package_info(self):
         if self.settings.os == "Windows":
