@@ -5,45 +5,27 @@ on:
     paths:
       - 'cura/**'
       - 'uranium/**'
-      - 'windows'
+      - 'windows/**'
       - '.github/workflows/conan-package.yml'
-      - '.github/workflows/requirements-runner.txt'
       - 'conanfile.py'
       - 'conandata.yml'
     branches:
       - main
+      - master
       - 'CURA-*'
+      - 'PP-*'
+      - 'NP-*'
       - '[0-9].[0-9]*'
+      - '[0-9].[0-9][0-9]*'
     tags:
       - '[0-9]+.[0-9]+.[0-9]*'
       - '[0-9]+.[0-9]+.[0-9]'
 
 jobs:
-  conan-recipe-version:
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
+# FIXME: Use main once merged
+  conan-package:
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@CURA-11622_conan_v2
     with:
       project_name: cura_binary_data
-
-  conan-package-export:
-    needs: [ conan-recipe-version ]
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@main
-    with:
-      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-      recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-    secrets: inherit
-
-  conan-package-create-windows:
-    needs: [ conan-recipe-version, conan-package-export ]
-
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-windows.yml@main
-    with:
-      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-    secrets: inherit
-
-  conan-package-create-linux:
-    needs: [ conan-recipe-version, conan-package-export ]
-
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-linux.yml@main
-    with:
-      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+      platform_mac: false
     secrets: inherit
