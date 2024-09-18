@@ -28,4 +28,5 @@ jobs:
     with:
       project_name: cura_binary_data
       platform_mac: false
+      install_system_dependencies: false
     secrets: inherit
