@@ -26,7 +26,7 @@ jobs:
   conan-package:
     uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@CURA-11622_conan_v2
     with:
-      project_name: cura_binary_data
+      package_name: cura_binary_data
       platform_mac: false
       install_system_dependencies: false
     secrets: inherit
