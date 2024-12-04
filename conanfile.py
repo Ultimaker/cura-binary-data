@@ -5,7 +5,7 @@ from conan.errors import ConanInvalidConfiguration
 from conan.tools.scm import Version
 from conan.tools.files import copy, update_conandata
 
-required_conan_version = ">=1.59.0"
+required_conan_version = ">=2.7.0"
 
 
 class CuraBinaryDataConan(ConanFile):
@@ -31,10 +31,6 @@ class CuraBinaryDataConan(ConanFile):
         copy(self, "*", os.path.join(self.recipe_folder, "uranium"), os.path.join(self.export_sources_folder, "uranium"))
         copy(self, "*", os.path.join(self.recipe_folder, "windows"), os.path.join(self.export_sources_folder, "windows"))
 
-    def validate(self):
-        if (self.version != None) and (Version(self.version) <= Version("4")):
-            raise ConanInvalidConfiguration("Only versions 5+ are supported!")
-
     def layout(self):
         self.cpp.package.resdirs = [os.path.join("resources", "cura"), os.path.join("resources", "uranium"), "windows"]
 
@@ -51,10 +47,8 @@ class CuraBinaryDataConan(ConanFile):
             self.runenv_info.append_path("PATH", os.path.join(self.cpp.package.resdirs[2], "arduino", "CP210x_6.7.4"))
             self.runenv_info.append_path("PATH", os.path.join(self.cpp.package.resdirs[2], "arduino", "FTDI USB Drivers", "amd64"))
 
-    def package_id(self):
+    def compatibility(self):
         del self.info.settings.compiler
         del self.info.settings.build_type
-        if self.settings.os != "Windows":
-            compatible_pkg = self.info.clone()
-            compatible_pkg.settings.os = "Linux"
-            self.compatible_packages.append(compatible_pkg)
+        if self.info.settings.os != "Windows":
+            return [{"settings": [("os", "Linux")]}]
