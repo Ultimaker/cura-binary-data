@@ -31,10 +31,6 @@ class CuraBinaryDataConan(ConanFile):
         copy(self, "*", os.path.join(self.recipe_folder, "uranium"), os.path.join(self.export_sources_folder, "uranium"))
         copy(self, "*", os.path.join(self.recipe_folder, "windows"), os.path.join(self.export_sources_folder, "windows"))
 
-    def validate(self):
-        if (self.version != None) and (Version(self.version) <= Version("4")):
-            raise ConanInvalidConfiguration("Only versions 5+ are supported!")
-
     def layout(self):
         self.cpp.package.resdirs = [os.path.join("resources", "cura"), os.path.join("resources", "uranium"), "windows"]
 
